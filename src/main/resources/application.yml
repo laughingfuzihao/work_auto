@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: 工时excel生成
+  mvc:
+    view:
+      prefix: classpath:/templates/
+      suffix: .html
+server:
+  port: 9527

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<title>工时excel生成</title>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+</head>
+<body>
+<div id="app">
+    <el-container>
+        <el-header style=" text-align: center;line-height: 90px; font-size: 18px;font-weight: bold;">工时excel生成</el-header>
+        <el-main>
+            <el-row>
+                <el-col :span="8" :offset="8">
+                    <div class="grid-content bg-purple">
+                        <el-form :label-position="form" label-width="80px">
+                            <el-form-item label="姓名">
+                                <el-input v-model="form.name"></el-input>
+                            </el-form-item>
+                            <el-form-item label="内容">
+                                <el-input v-model="form.content"></el-input>
+                            </el-form-item>
+                            <el-form-item label="工作类型">
+                                <el-select v-model="form.type" placeholder="请选择">
+                                    <el-option
+                                            v-for="item in options1"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="年份">
+                                <el-select v-model="form.year" placeholder="请选择">
+                                    <el-option
+                                            v-for="item in options2"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="月份">
+                                <el-select v-model="form.month" placeholder="请选择">
+                                    <el-option
+                                            v-for="item in options3"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-form>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="8" :offset="8">
+                    <div style=" text-align: center;">
+                        <el-button type="primary" round v-on:click="excel">导出</el-button>
+                    </div>
+                </el-col>
+            </el-row>
+        </el-main>
+    </el-container>
+</div>
+</body>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            // 00 部门管理-培训,00 部门管理-a会议,00 其他,10 项目管理,20 咨询售前,30 需求分析,40 系统设计,50 编码,60 测试,70 基础架构实施,80 运维一线支持,80 运维-程序优化,80 运维-数据,80 运维-基础架构,{.type}
+            return {
+                form:{
+                    type: '50 编码',
+                    name: '傅子豪',
+                    year: new Date().getFullYear(),
+                    month: new Date().getMonth() + 1,
+                    content:''
+                },
+                options1: [{
+                    value: '50 编码',
+                    label: '50 编码'
+                }, {
+                    value: '60 测试',
+                    label: '60 测试'
+                }, {
+                    value: '30 需求分析',
+                    label: '30 需求分析'
+                }],
+                options2: [{
+                    value: '2020',
+                    label: '2020'
+                }, {
+                    value: '2021',
+                    label: '2021'
+                }, {
+                    value: '2022',
+                    label: '2021'
+                }],
+                options3: [{
+                    value: '1',
+                    label: '1'
+                }, {
+                    value: '2',
+                    label: '2'
+                }, {
+                    value: '3',
+                    label: '3'
+                }, {
+                    value: '4',
+                    label: '4'
+                }, {
+                    value: '5',
+                    label: '5'
+                }, {
+                    value: '6',
+                    label: '6'
+                }, {
+                    value: '7',
+                    label: '7'
+                }, {
+                    value: '8',
+                    label: '8'
+                }, {
+                    value: '9',
+                    label: '9'
+                }, {
+                    value: '10',
+                    label: '10'
+                }, {
+                    value: '11',
+                    label: '11'
+                }, {
+                    value: '12',
+                    label: '12'
+                }],
+            };
+        },
+        methods: {
+            excel() {
+                var url = "http://localhost/get?name=" + this.form.name + "&year=" + this.form.year
+                    + "&month=" + this.form.month + "&type=" + this.form.type + "&content=" + this.form.content;
+                // 发送一个请求   ajax 请求
+                window.location.href = url;
+            }
+        }
+    })
+</script>
+</html>
