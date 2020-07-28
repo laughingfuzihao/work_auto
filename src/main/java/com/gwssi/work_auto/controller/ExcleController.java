@@ -70,8 +70,9 @@ public class ExcleController {
         byte[] b = new byte[100];
         int len;
         try {
-            while ((len = inStream.read(b)) > 0)
+            while ((len = inStream.read(b)) > 0) {
                 response.getOutputStream().write(b, 0, len);
+            }
             inStream.close();
         } catch (IOException e) {
             e.printStackTrace();
