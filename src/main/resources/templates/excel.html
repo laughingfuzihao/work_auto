@@ -10,8 +10,8 @@
 <body>
 <div id="app">
     <el-container>
-        <el-header style=" text-align: center;line-height: 90px; font-size: 18px;font-weight: bold;">工时excel生成</el-header>
-        <el-main>
+        <el-header>工时excel生成</el-header>
+        <el-main style="position: fixed ; width: 100%;top:24%; ">
             <el-row>
                 <el-col :span="8" :offset="8">
                     <div class="grid-content bg-purple">
@@ -59,13 +59,14 @@
             <el-row>
                 <el-col :span="8" :offset="8">
                     <div style=" text-align: center;">
-                        <el-button type="primary" round v-on:click="excel">导出</el-button>
+                        <el-button type="primary" round v-on:click="excel" style="width: 130px;bottom: 20%">导出</el-button>
                     </div>
                 </el-col>
             </el-row>
         </el-main>
     </el-container>
 </div>
+<div class="foot">京ICP备20013876<br>@laughing 2020 - 2020</div>
 </body>
 <!-- import Vue before Element -->
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
@@ -77,12 +78,12 @@
         data() {
             // 00 部门管理-培训,00 部门管理-a会议,00 其他,10 项目管理,20 咨询售前,30 需求分析,40 系统设计,50 编码,60 测试,70 基础架构实施,80 运维一线支持,80 运维-程序优化,80 运维-数据,80 运维-基础架构,{.type}
             return {
-                form:{
+                form: {
                     type: '50 编码',
                     name: '傅子豪',
                     year: new Date().getFullYear(),
                     month: new Date().getMonth() + 1,
-                    content:''
+                    content: ''
                 },
                 options1: [{
                     value: '50 编码',
@@ -102,7 +103,7 @@
                     label: '2021'
                 }, {
                     value: '2022',
-                    label: '2021'
+                    label: '2022'
                 }],
                 options3: [{
                     value: '1',
@@ -153,4 +154,38 @@
         }
     })
 </script>
+<style>
+    body {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://api.dujin.org/bing/1920.php) 0px 0px no-repeat;
+    }
+
+    header {
+        color: #ffffff;
+        font-size: 30px;
+        text-align: center;
+        line-height: 290px;
+    }
+
+    .el-form-item__label {
+        color: #ffffff;
+    }
+
+
+    .app-block {
+        width: 28%;
+        margin: 0 auto;
+        text-align: center;
+        padding: 3em 5em;
+        height: 80%;
+    }
+
+    .foot {
+
+        color: white;
+        font-size: 14px;
+        position: fixed;
+        bottom: 8%;
+        left: 45%;
+    }
+</style>
 </html>
