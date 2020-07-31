@@ -3,6 +3,7 @@ package com.gwssi.work_auto.controller;
 import com.alibaba.excel.EasyExcel;
 
 import com.gwssi.work_auto.pojo.Work;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -19,6 +23,7 @@ import java.util.*;
  * @date 20202020/7/23 12:47
  */
 @RestController
+@Slf4j
 public class ExcleController {
 
     @GetMapping("/get")
@@ -27,7 +32,7 @@ public class ExcleController {
                              @RequestParam("year") int year,
                              @RequestParam("month") int month,
                              @RequestParam("type") String type,
-                             @RequestParam("content") String content) throws IOException {
+                             @RequestParam("content") String content) throws IOException, ParseException {
 
 
 
@@ -41,22 +46,30 @@ public class ExcleController {
 
 
         ArrayList<Work> workArrayList = new ArrayList<>();
-        List<String> workDateList = DateController.getWolkdayInMonth(year, month);
+        List<Date> workDateList = DateController.getWolkdayInMonth(year, month);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        java.text.SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
 
         for (int i = 0; i < workDateList.size(); i++) {
             Work work = new Work();
-            work.setDate(workDateList.get(i));
+            work.setDate(Date2Double(workDateList.get(i)));
             work.setHour(8);
             work.setType(type);
             work.setContent(content);
             workArrayList.add(work);
         }
-        String base = "/home/";
+
+         String base = "/home/";
+        //String base = "D:\\worktime\\";
         String templateFileName = base + "work_time.xls";
         String fileName = base + name + month + "月工时.xls";
         String downName = name + month + "月工时.xls";
 
         EasyExcel.write(fileName).withTemplate(templateFileName).sheet(0).doFill(workArrayList);
+        log.info(name+"导出了"+month+"月工时，工作内容："+content);
+
+        String fileName2 = base+downName;
+        // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
 
 
 
@@ -79,7 +92,14 @@ public class ExcleController {
         }
 
     }
+    public static double Date2Double(Date date){
+        @SuppressWarnings("deprecation")
+        long localOffset  = date.getTimezoneOffset()*60000;
+        double dd = (double)(date.getTime()-localOffset)/ 24 / 3600 / 1000 + 25569.0000000;
+        DecimalFormat df = new DecimalFormat("#.0000000000");//先默认保留10位小数
 
+        return Double.valueOf(df.format(dd));
+    }
 
 
 }

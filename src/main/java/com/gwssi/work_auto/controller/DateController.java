@@ -4,11 +4,11 @@ import com.alibaba.excel.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Fu zihao
@@ -52,8 +52,10 @@ public class DateController {
      * @param month
      * @return
      */
-    public static List<String> getWolkdayInMonth(int year, int month) {
-        List<String> list = new ArrayList<String>();
+
+    public static List<Date> getWolkdayInMonth(int year, int month) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        List<Date> list = new ArrayList<Date>();
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);// 不设置的话默认为当年
         calendar.set(Calendar.MONTH, month - 1);// 设置月份
@@ -68,11 +70,11 @@ public class DateController {
                 if ((week == Calendar.SATURDAY || week == Calendar.SUNDAY)) {// 1代表周日，7代表周六 判断这是一个星期的第几天从而判断是否是周末
                     //如果是补班，则属于正常上班时间
                     if(ifHoliday==3){
-                        list.add(year+"/"+month+"/"+calendar.get(Calendar.DAY_OF_MONTH));
+                        list.add(strToDate(year+"/"+month+"/"+calendar.get(Calendar.DAY_OF_MONTH)));
                     }
                 }else{
                     // 得到当天是一个月的第几天
-                    list.add(year+"/"+month+"/"+calendar.get(Calendar.DAY_OF_MONTH));
+                    list.add(strToDate(year+"/"+month+"/"+calendar.get(Calendar.DAY_OF_MONTH)));
                 }
 
             }
@@ -82,4 +84,11 @@ public class DateController {
         return list;
     }
 
+    public static Date strToDate(String strDate) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        ParsePosition pos = new ParsePosition(0);
+        Date strtodate = formatter.parse(strDate, pos);
+        return strtodate;
+    }
 }
+

@@ -2,6 +2,7 @@ package com.gwssi.work_auto.pojo;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
+import com.alibaba.excel.annotation.format.NumberFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,9 @@ public class Work {
     /**
      * 日期
      */
-    private String date;
+
+    @NumberFormat("yyyy/m/d")
+    private double date;
     /**
      * 工作量
      */
